@@ -50,7 +50,7 @@ filter_books:
   ?????
   // 3 - Indique au chatbot qu'il doit se souvenir de la réponse de l'utilisateur
   // en la mettant dans une variable qu'on appelera  "category"
-  remember ????? = event
+  ????? category = event
   say "Moi aussi j'adore les ouvrages {{category}}"
   goto book_size
   
