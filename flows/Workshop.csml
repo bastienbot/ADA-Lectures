@@ -74,7 +74,7 @@ book_size:
     remember size = 2000
   }
   // 5 - Indique au chatbot qu'il doit se rendre à l'étape sort_books
-  goto sort_books
+  ????? sort_books
 
 
 sort_books:
@@ -93,8 +93,8 @@ sort_books:
   } else {
     ????? ????? = false
   }
-  // 10 - Indique au chatbot qu'il doit se rendre à l'étape display
-  ????? display
+  // 10 - Indique au chatbot qu'il doit se rendre à l'étape `display`
+  ????? ?????
 
 search_books:
   say "Donne moi un mot-clé, je vais montrer les livres qui correspondent."
