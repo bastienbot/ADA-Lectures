@@ -25,12 +25,12 @@ what_type:
 	if (event match btnmovie) {
     // Si l'utilisateur a cliqué sur le bouton film, on va demander au csml de se souvenir du mot "movie"
     // Nous nous en servirons plus tard ;)
-		remember movie_type = "movie"
+		remember movie_type = "film"
 	}
 	else if (event match btnserie) {
 		remember movie_type = "serie"
 	} else {
-    remember movie_type = "any"
+    remember movie_type = "tout"
   }
-	say "Je me rappellerai de : {{movie_type}}"
+	say "Je me rappellerai que tu as cliqué sur {{movie_type}}"
   goto end

@@ -6,12 +6,7 @@ start:
   remember cdc = false
 
 
-
 	goto end /* Efface cette ligne  pour commencer
-
-
-
-
 
 
 	say "Je suis LecturaBot, je suis ton assistante de lecture 📚"
@@ -127,7 +122,6 @@ display:
 
 moreInfos:
   hold
-  say "{{event}}"
   do plop = event
   if (!plop.is_int()) goto start
   do book = Fn("ADA_lectures", id=plop.to_int())
