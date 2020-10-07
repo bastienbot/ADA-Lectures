@@ -1,0 +1,33 @@
+{
+  "id": "91b0ad31-ca4d-4d50-a3d2-0ed374025147",
+  "name": "ADA_Lectures",
+  "description": null,
+  "default_flow": "Workshop",
+  "flows": [
+    {
+      "name": "Introduction",
+      "description": null,
+      "commands": []
+    },
+    {
+      "name": "Workshop",
+      "description": null,
+      "commands": []
+    }
+  ],
+  "files": [],
+  "functions": [
+    {
+      "name": "ADA_lectures",
+      "description": null,
+      "args": [],
+      "import_url": null,
+      "runtime": "nodejs12.x",
+      "handler": "index.handler",
+      "environment": {},
+      "app_id": null,
+      "version": null
+    }
+  ],
+  "apps": []
+}

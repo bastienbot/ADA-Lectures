@@ -1,0 +1,142 @@
+start:
+  remember is_sorted = false
+  remember size = false
+  remember category = false
+  remember search = false
+  remember cdc = false
+
+
+
+	goto end /* Efface cette ligne  pour commencer
+
+
+
+
+
+
+	say "Je suis LecturaBot, je suis ton assistante de lecture 📚"
+	goto actions
+
+actions:
+	say Question("Comment veux-tu découvrir les lectures du moment ?",
+	buttons=[
+    Button("Recherche par titre 🔍") as search_btn,
+		Button("Avec des filtres 🤏") as filters_btn,
+		Button("Les coups de coeur ❤️ ADA") as cdc_btn
+		])
+	hold
+	if (event match filters_btn) {
+		remember cdc = false
+    goto filter_books
+	}
+	else if (event match search_btn) {
+		remember cdc = false
+    goto search_books
+	}
+  else {
+    remember cdc = true
+    goto sort_books
+  }
+
+
+// ############################################################
+// À toi de jouer maintenant, il va falloir remplir les trous !
+// ############################################################
+filter_books:
+  // 1 - Écris la question que va poser le chatbot à l'utilisateur
+  say Question("?????",
+  button_type="quick_reply",
+	buttons=[
+    Button("Social Science"),
+    Button("Biography & Autobiography"),
+    Button("Fiction")
+  ])
+  // 2 - Indique au chatbot d'attendre la réponse de l'utilisateur ici
+  ?????
+  // 3 - Indique au chatbot qu'il doit se souvenir de la réponse de l'utilisateur
+  // en la mettant dans une variable qu'on appelera  "category"
+  remember ????? = event
+  say "Moi aussi j'adore les ouvrages {{category}}"
+  goto book_size
+  
+book_size:
+  say Question("Quel est le nombre de pages idéal pour toi ?",
+	buttons=[
+		Button("Moins de 400") as m400_btn,
+		Button("Plus de 400") as p400_btn
+		])
+  hold
+  // 4 - Vérifie si l'utilisateur a cliqué sur le premier bouton ou sur le second
+  ????? (event match m400_btn) {
+    remember size = 400
+  }
+  ????? {
+    remember size = 2000
+  }
+  // 5 - Indique au chatbot qu'il doit se rendre à l'étape sort_books
+  goto sort_books
+
+
+sort_books:
+  // 6 - Demande à l'utilisateur si il souhaite que les résultats soient trier par notes
+  ????? ?????("Est-ce que tu veux veux que les résultats soient trier par notes ?",
+	buttons=[
+    // 7 - Ajoute deux boutons : oui et non
+    ?????("Oui 🤩") as yes_btn,
+    ?????("Non 🤔") as no_btn
+	])
+  // 8 - Indique au chatbot d'attendre la réponse de l'utilisateur ici
+  ?????
+  // 9 - Si l'utilisateur clique sur oui, crée une variable "is_sorted" et mets le mot "true" à l'interieur
+  if (event match yes_btn) {
+    ????? ????? = true
+  } else {
+    ????? ????? = false
+  }
+  // 10 - Indique au chatbot qu'il doit se rendre à l'étape display
+  ????? display
+
+search_books:
+  say "Donne moi un mot-clé, je vais montrer les livres qui correspondent."
+  hold
+  remember search = event
+  goto display
+
+display:
+  if (!size) remember size = ""
+  if (!category) remember category = ""
+  do res = Fn("ADA_lectures", cdc=cdc, is_sorted=is_sorted, size=size, category=category, search=search)
+  do cards = []
+  if (res.length() == 0) {
+    say "Je n'ai pas trouvé de livre, désolé 😔"
+    goto start
+  }
+  foreach (val, index) in res {
+    do newCard = Card(
+      title=val.title,
+      subtitle="{{val.year}} - {{val.note}} - ❤️{{val.cdc}}",
+      image_url=val.image,
+      buttons=[Button("En savoir plus", payload=val.id.to_string())]
+    )
+    if (index < 6) do cards.push(newCard)
+  }
+  say Carousel(
+    cards = cards
+  )
+  goto moreInfos
+
+moreInfos:
+  hold
+  say "{{event}}"
+  do plop = event
+  if (!plop.is_int()) goto start
+  do book = Fn("ADA_lectures", id=plop.to_int())
+  if (!book) {
+    say "Je n'au pas trouvé ce livre :-/"
+    goto start
+  }
+  say "**{{book.title}}** - {{book.year}}"
+  say "Synopsis : {{book.description}}"
+  say Url("Découvrir le livre", url="{{book.url}}")
+  say Button("Chercher d'autres ouvrages")
+  goto moreInfos
